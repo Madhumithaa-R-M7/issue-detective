@@ -1,0 +1,35 @@
+# ============================================================
+# render.yaml — Render.com Deployment Manifest
+# CivicConnect Backend (Express + MongoDB Atlas)
+# ============================================================
+# Docs: https://render.com/docs/blueprint-spec
+# ============================================================
+
+services:
+  - type: web
+    name: civicconnect-api
+    runtime: node
+    plan: free                          # upgrade to starter for always-on
+    region: singapore                   # closest to India
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /api/health
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+
+      - key: PORT
+        value: 5000
+
+      # ── Set these in Render Dashboard → Environment ──────
+      # Do NOT put actual secrets in this file.
+      - key: MONGODB_URI
+        sync: false                     # fill in Render dashboard
+
+      - key: JWT_SECRET
+        sync: false                     # fill in Render dashboard
+
+      - key: FRONTEND_URL
+        sync: false                     # e.g. https://civicconnect.vercel.app
